@@ -21,10 +21,13 @@ export class CdkWorkshopStack extends cdk.Stack {
     })
 
     const httpApi = new apigw.HttpApi(this, 'MyHttpApi');
-    httpApi.addRoutes({
-      path: '/hello',
-      methods: [apigw.HttpMethod.GET],
-      integration: lambdaIntegration
+    const paths = ['/hello', '/dogs'];
+    paths.forEach(path => {
+      httpApi.addRoutes({
+        path: path,
+        methods: [apigw.HttpMethod.GET, apigw.HttpMethod.POST],
+        integration: lambdaIntegration
+      });
     });
   }
 }

@@ -2,6 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import * as lambda from '@aws-cdk/aws-lambda'
 import * as apigw from '@aws-cdk/aws-apigatewayv2'
 import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations'
+import {HitCounter} from "./hitcounter";
 
 export class CdkWorkshopStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
@@ -13,8 +14,10 @@ export class CdkWorkshopStack extends cdk.Stack {
       handler: 'hello.handler'
     });
 
+    const helloHitCounter = new HitCounter(this, 'MyHitCounter', {downstream: hello});
+
     const lambdaIntegration = new LambdaProxyIntegration({
-      handler: hello
+      handler: helloHitCounter.handler
     })
 
     const httpApi = new apigw.HttpApi(this, 'MyHttpApi');

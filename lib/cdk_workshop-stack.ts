@@ -32,7 +32,7 @@ export class CdkWorkshopStack extends cdk.Stack {
       });
     });
 
-    this.hcEndpointUrl = new cdk.CfnOutput(this, 'TableViewerUrl', {
+    this.hcEndpointUrl = new cdk.CfnOutput(this, 'ApiGatewayUrl', {
       value: httpApi.url ?? 'Http URL NOT created'
     });
   }

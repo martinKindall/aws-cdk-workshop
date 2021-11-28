@@ -5,7 +5,7 @@ import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations'
 import {HitCounter} from "./hitcounter";
 
 export class CdkWorkshopStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const hello = new lambda.Function(this, 'HelloHandler', {

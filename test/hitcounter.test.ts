@@ -49,3 +49,29 @@ test('Lambda exists and has env vars', () => {
         }
     );
 });
+
+test('Dynamo RCU can be configured', () => {
+    const stack = new cdk.Stack();
+
+    expect(() => {
+        new HitCounter(stack, 'MyConstruct', {
+            downstream: new lambda.Function(stack, 'ALambda', {
+                runtime: lambda.Runtime.NODEJS_14_X,
+                code: lambda.Code.fromAsset('lambda'),
+                handler: 'hello.handler'
+            }),
+            readCapacity: 6
+        });
+    }).toThrowError(/RCU in DynamoDB cannot be less than 1 or greater than 5/)
+
+    expect(() => {
+        new HitCounter(stack, 'MyConstruct2', {
+            downstream: new lambda.Function(stack, 'ALambda2', {
+                runtime: lambda.Runtime.NODEJS_14_X,
+                code: lambda.Code.fromAsset('lambda'),
+                handler: 'hello.handler'
+            }),
+            readCapacity: 0
+        });
+    }).toThrowError(/RCU in DynamoDB cannot be less than 1 or greater than 5/)
+});

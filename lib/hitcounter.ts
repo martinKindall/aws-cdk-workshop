@@ -6,7 +6,8 @@ import {Table} from "@aws-cdk/aws-dynamodb";
 
 
 export interface HitCounterProps {
-    downstream: lambda.IFunction
+    downstream: lambda.IFunction,
+    readCapacity?: number
 }
 
 export class HitCounter extends cdk.Construct {
@@ -14,10 +15,11 @@ export class HitCounter extends cdk.Construct {
 
     constructor(scope: cdk.Construct, id: string, props: HitCounterProps) {
         super(scope, id);
+        this.validateProps(props);
 
         const table = new dynamodb.Table(this, 'Hits', {
             partitionKey: {name: 'path', type: dynamodb.AttributeType.STRING},
-            readCapacity: 1,
+            readCapacity: props.readCapacity ?? 1,
             writeCapacity: 1
         });
         this.addTableViewer(this, table);
@@ -41,5 +43,11 @@ export class HitCounter extends cdk.Construct {
             table: table,
             title: 'Hits Table'
         });
+    }
+
+    private validateProps(props: HitCounterProps) {
+        if (props.readCapacity !== undefined && (props.readCapacity < 1 || props.readCapacity > 5)) {
+            throw new Error("The RCU in DynamoDB cannot be less than 1 or greater than 5");
+        }
     }
 }

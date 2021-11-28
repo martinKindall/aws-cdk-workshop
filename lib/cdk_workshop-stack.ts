@@ -5,6 +5,8 @@ import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations'
 import {HitCounter} from "./hitcounter";
 
 export class CdkWorkshopStack extends cdk.Stack {
+  public readonly hcEndpointUrl: cdk.CfnOutput;
+
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
@@ -28,6 +30,10 @@ export class CdkWorkshopStack extends cdk.Stack {
         methods: [apigw.HttpMethod.GET, apigw.HttpMethod.POST],
         integration: lambdaIntegration
       });
+    });
+
+    this.hcEndpointUrl = new cdk.CfnOutput(this, 'TableViewerUrl', {
+      value: httpApi.url ?? 'Http URL NOT created'
     });
   }
 }

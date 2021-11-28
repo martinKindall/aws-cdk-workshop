@@ -12,7 +12,7 @@ export interface HitCounterProps {
 
 export class HitCounter extends cdk.Construct {
     public readonly handler: lambda.Function;
-    public readonly hcViewerUrl: cdk.CfnOutput;
+    public readonly myTableViewerUrl: cdk.CfnOutput;
     private tableViewer: TableViewer;
 
     constructor(scope: cdk.Construct, id: string, props: HitCounterProps) {
@@ -39,7 +39,7 @@ export class HitCounter extends cdk.Construct {
         table.grantReadWriteData(this.handler);
         props.downstream.grantInvoke(this.handler);
 
-        this.hcViewerUrl = new cdk.CfnOutput(this, 'TableViewerUrl', {
+        this.myTableViewerUrl = new cdk.CfnOutput(this, 'TheViewerUrl', {
             value: this.tableViewer.endpoint
         });
     }

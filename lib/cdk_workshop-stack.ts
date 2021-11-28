@@ -5,7 +5,8 @@ import { LambdaProxyIntegration } from '@aws-cdk/aws-apigatewayv2-integrations'
 import {HitCounter} from "./hitcounter";
 
 export class CdkWorkshopStack extends cdk.Stack {
-  public readonly hcEndpointUrl: cdk.CfnOutput;
+  public readonly httpApiUrl: cdk.CfnOutput;
+  public readonly myTableViewerUrl: cdk.CfnOutput;
 
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -17,6 +18,7 @@ export class CdkWorkshopStack extends cdk.Stack {
     });
 
     const helloHitCounter = new HitCounter(this, 'MyHitCounter', {downstream: hello});
+    this.myTableViewerUrl = helloHitCounter.myTableViewerUrl;
 
     const lambdaIntegration = new LambdaProxyIntegration({
       handler: helloHitCounter.handler
@@ -32,7 +34,7 @@ export class CdkWorkshopStack extends cdk.Stack {
       });
     });
 
-    this.hcEndpointUrl = new cdk.CfnOutput(this, 'ApiGatewayUrl', {
+    this.httpApiUrl = new cdk.CfnOutput(this, 'MyApiGatewayUrl', {
       value: httpApi.url ?? 'Http URL NOT created'
     });
   }

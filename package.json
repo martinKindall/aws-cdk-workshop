@@ -25,9 +25,6 @@
     "@aws-cdk/aws-apigatewayv2-integrations": "^1.134.0",
     "@aws-cdk/aws-dynamodb": "^1.134.0",
     "@aws-cdk/aws-lambda": "^1.134.0",
-    "@aws-cdk/aws-sns": "1.129.0",
-    "@aws-cdk/aws-sns-subscriptions": "1.129.0",
-    "@aws-cdk/aws-sqs": "1.129.0",
     "@aws-cdk/core": "^1.134.0",
     "aws-sdk": "^2.1037.0",
     "cdk-dynamo-table-viewer": "^3.1.2"
